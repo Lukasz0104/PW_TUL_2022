@@ -11,7 +11,10 @@ namespace DataLayer
 
         private class DataAPI : AbstractDataAPI
         {
+            public DataAPI()
+            {
 
+            }
         }
     }
 }

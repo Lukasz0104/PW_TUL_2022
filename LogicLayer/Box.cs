@@ -9,13 +9,14 @@ namespace LogicLayer
         public double SizeX { get; }
         public double SizeY { get; }
 
-        public List<Ball> Balls { get; }
+        private List<Ball> balls = new List<Ball>();
+        public List<Ball> Balls { get => balls; }
 
         public Box(double sizeX, double sizeY)
         {
             SizeX = sizeX;
             SizeY = sizeY;
-            Balls = new List<Ball>();
+            balls = new List<Ball>();
         }
 
         public void addBall(Ball b)

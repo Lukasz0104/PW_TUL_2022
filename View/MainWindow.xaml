@@ -4,12 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:View"
+        xmlns:vm="clr-namespace:ViewModelLayer;assembly=ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" 
         Height="400" 
         Width="600"
-        Background="Azure" >
-    
+        Background="Azure" ResizeMode="NoResize" >
+    <Window.DataContext>
+        <vm:ViewModel />
+    </Window.DataContext>
+
     <Grid HorizontalAlignment="Stretch" 
           VerticalAlignment="Center" 
           Margin="10,10,10,10">
@@ -29,7 +33,20 @@
                 BorderThickness="3" 
                 Height="300" 
                 Width="450">
-            <Canvas Background="LightGray"/>
+            <Canvas Background="LightGray">
+                <ItemsControl ItemsSource="{Binding Balls}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Ellipse 
+                                Canvas.Left="{Binding PositionX}"
+                                Canvas.Top="{Binding PositionY}"
+                                Width="{Binding Radius}"
+                                Height="{Binding Radius}"
+                                Fill="GreenYellow"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Canvas>
         </Border>
 
         <StackPanel Grid.Column="1" 
@@ -37,10 +54,12 @@
                     HorizontalAlignment="Stretch" 
                     Width="Auto" 
                     VerticalAlignment="Center">
-            <Button Content="Start"/>
+            <Button Content="Start"
+                    Command="{Binding StartCommand}"/>
             <Button Content="Dodaj kulę" 
                     Margin="0,5,0,5" 
-                    Background="LightGreen"/>
+                    Background="LightGreen"
+                    Command="{Binding AddBallCommand}"/>
             <TextBox TextWrapping="NoWrap" 
                      Text="10" 
                      FontSize="15" 
@@ -50,7 +69,8 @@
                      Width="Auto"/>
             <Button Content="Usuń kulę" 
                     Margin="0,5,0,5" 
-                    Background="OrangeRed"/>
+                    Background="OrangeRed"
+                    Command="{Binding RemoveBallCommand}"/>
         </StackPanel>
         
     </Grid>

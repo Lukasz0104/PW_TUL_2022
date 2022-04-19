@@ -10,17 +10,22 @@ namespace LogicLayer
         public double PositionY { get; set; }
         public double Radius { get; }
 
-        public Ball(double positionX, double positionY, double radius)
+        public double VelocityX { get; set; }
+        public double VelocityY { get; set; }
+
+        public Ball(double positionX, double positionY, double radius, double velocityX, double velocityY)
         {
             PositionX = positionX;
             PositionY = positionY;
             Radius = radius;
+            VelocityX = velocityX;
+            VelocityY = velocityY;
         }
 
-        public void updateBall(double changeX, double changeY)
+        public void updateBall()
         {
-            PositionX += changeX;
-            PositionY += changeY;
+            PositionX += VelocityX;
+            PositionY += VelocityY;
         }
     }
 }
