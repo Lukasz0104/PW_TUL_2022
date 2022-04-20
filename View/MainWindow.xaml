@@ -16,13 +16,13 @@
 
     <Grid HorizontalAlignment="Stretch" 
           VerticalAlignment="Center" 
-          Margin="10,10,10,10">
-        
+          Margin="5,10,5,10">
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="8*" />
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -31,22 +31,41 @@
                 Grid.Row="0" 
                 BorderBrush="Black" 
                 BorderThickness="3" 
-                Height="300" 
-                Width="450">
-            <Canvas Background="LightGray">
-                <ItemsControl ItemsSource="{Binding Balls}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Ellipse 
-                                Canvas.Left="{Binding PositionX}"
-                                Canvas.Top="{Binding PositionY}"
-                                Width="{Binding Radius}"
-                                Height="{Binding Radius}"
-                                Fill="GreenYellow"/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </Canvas>
+                Width="456">
+            <ItemsControl ItemsSource="{Binding Balls}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas 
+                            Background="LightGray"
+                            Height="300" 
+                            Width="450"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentPresenter">
+                        <Setter 
+                            Property="Canvas.Left"
+                            Value="{Binding PositionX}" />
+                        <Setter 
+                            Property="Canvas.Top"
+                            Value="{Binding PositionY}" />
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Ellipse 
+                            Width="{Binding Diameter}"
+                            Height="{Binding Diameter}"
+                            Fill="GreenYellow">
+                            <Ellipse.RenderTransform>
+                                <TranslateTransform 
+                                    X="{Binding CenterTransform}"
+                                    Y="{Binding CenterTransform}" />
+                            </Ellipse.RenderTransform>
+                        </Ellipse>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </Border>
 
         <StackPanel Grid.Column="1" 
@@ -61,7 +80,7 @@
                     Background="LightGreen"
                     Command="{Binding AddBallCommand}"/>
             <TextBox TextWrapping="NoWrap" 
-                     Text="10" 
+                     Text="2" 
                      FontSize="15" 
                      TextAlignment="Right" 
                      Margin="0,5,0,5"
@@ -72,6 +91,6 @@
                     Background="OrangeRed"
                     Command="{Binding RemoveBallCommand}"/>
         </StackPanel>
-        
+
     </Grid>
 </Window>

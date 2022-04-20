@@ -14,7 +14,7 @@ namespace LogicLayer
             this.dataAPI = (dataAPI == null) ? AbstractDataAPI.createDataAPI() : dataAPI;
         }
 
-        public abstract IEnumerable<Ball> GetBalls();
+        public abstract List<Ball> GetBalls();
 
         public abstract void createBall();
         public abstract void createBalls(int count);
@@ -25,7 +25,7 @@ namespace LogicLayer
 
         public static AbstractLogicAPI createLogicAPI(AbstractDataAPI dataAPI = null)
         {
-            return new LogicAPI(150.0, 100.0, dataAPI);
+            return new LogicAPI(450, 300.0, dataAPI);
         }
 
         private class LogicAPI : AbstractLogicAPI
@@ -33,7 +33,7 @@ namespace LogicLayer
             private bool isRunning = false;
             private Random random = new Random();
             private Box box;
-            private List<Thread> ballThreads = new List<Thread> ();
+            private List<Thread> ballThreads = new List<Thread>();
 
             public LogicAPI(double sizeX, double sizeY, AbstractDataAPI abstractDataAPI = null)
                 : base(abstractDataAPI)
@@ -43,13 +43,14 @@ namespace LogicLayer
 
             ~LogicAPI()
             {
+                isRunning = false;
                 foreach (Thread t in ballThreads)
                 {
                     t.Abort();
                 }
             }
 
-            public override IEnumerable<Ball> GetBalls()
+            public override List<Ball> GetBalls()
             {
                 return box.Balls;
             }
@@ -60,8 +61,8 @@ namespace LogicLayer
                 double x = r + random.NextDouble() * (box.SizeX - 2 * r);
                 double y = r + random.NextDouble() * (box.SizeY - 2 * r);
                 int angle = random.Next(360);
-                double vx = 1 * Math.Sin(angle * Math.PI / 180);
-                double vy = 1 * Math.Cos(angle * Math.PI / 180);
+                double vx = 5 * Math.Sin(angle * Math.PI / 180);
+                double vy = 5 * Math.Cos(angle * Math.PI / 180);
                 Ball b = new Ball(x, y, r, vx, vy);
 
                 box.addBall(b);
@@ -70,9 +71,34 @@ namespace LogicLayer
                     while (isRunning)
                     {
                         b.updateBall();
-                        Thread.Sleep(1000);
+                        if (b.Radius + b.PositionX >= box.SizeX)
+                        {
+                            b.VelocityX *= -1;
+                            b.PositionX = box.SizeX - Math.Abs(b.PositionX - box.SizeX);
+                        }
+                        else if (b.PositionX <= b.Radius)
+                        {
+                            b.VelocityX *= -1;
+                            b.PositionX = b.Radius + Math.Abs(b.Radius - b.PositionX);
+                        }
+
+                        if (b.PositionY + b.Radius >= box.SizeY)
+                        {
+                            b.VelocityY *= -1;
+                            b.PositionY = box.SizeY - Math.Abs(b.PositionY - box.SizeY);
+                        }
+                        if (b.PositionY <= b.Radius)
+                        {
+                            b.VelocityY *= -1;
+                            b.PositionY = b.Radius + Math.Abs(b.Radius - b.PositionY);
+                        }
+                        Thread.Sleep(10);
                     }
                 });
+                if (isRunning)
+                {
+                    t.Start();
+                }
                 ballThreads.Add(t);
             }
 

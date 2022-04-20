@@ -7,22 +7,27 @@ namespace ModelLayer
     public class Model
     {
         private readonly AbstractLogicAPI logicAPI;
-        public ObservableCollection<BallAdapter> ObservableBallCollection { get; }
+        private ObservableCollection<BallAdapter> observableBallCollection = new ObservableCollection<BallAdapter>();
+        public ObservableCollection<BallAdapter> ObservableBallCollection
+        {
+            get => observableBallCollection;
+            set => observableBallCollection = value;
+        }
 
         public Model(AbstractLogicAPI logicAPI = null)
         {
             this.logicAPI = (logicAPI == null) ? AbstractLogicAPI.createLogicAPI() : logicAPI;
-            this.logicAPI.createBalls(10);
-            ObservableBallCollection = new ObservableCollection<BallAdapter>();
-            foreach (Ball b in this.logicAPI.GetBalls())
-            {
-                ObservableBallCollection.Add(new BallAdapter(b));
-            }
+
+            this.logicAPI.createBalls(2);
         }
 
         public void start()
         {
             logicAPI.start();
+            foreach (Ball b in logicAPI.GetBalls())
+            {
+                ObservableBallCollection.Add(new BallAdapter(b));
+            }
         }
 
         public void stop()
@@ -33,11 +38,13 @@ namespace ModelLayer
         public void addBall()
         {
             logicAPI.createBall();
+            observableBallCollection.Add(new BallAdapter(logicAPI.GetBalls()[logicAPI.GetBalls().Count - 1]));
         }
 
         public void removeBall()
         {
             logicAPI.deleteBall();
+            observableBallCollection.RemoveAt(observableBallCollection.Count - 1);
         }
     }
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -9,7 +8,19 @@ namespace ViewModelLayer
 {
     public class ViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<BallAdapter> Balls { get => modelAPI.ObservableBallCollection; }
+        private Model modelAPI = new Model();
+        public ObservableCollection<BallAdapter> Balls 
+        {
+            get
+            {
+                return modelAPI.ObservableBallCollection;
+            }
+            set
+            {
+                modelAPI.ObservableBallCollection = value;
+            }
+        }
+
         public ICommand StartCommand { get; set; }
         public ICommand AddBallCommand { get; set; }
         public ICommand RemoveBallCommand { get; set; }
@@ -21,14 +32,7 @@ namespace ViewModelLayer
             RemoveBallCommand = new RelayCommand(RemoveBall);
         }
 
-        private Model modelAPI = new Model();
-
         public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
         private void Start(object obj)
         {
@@ -43,6 +47,11 @@ namespace ViewModelLayer
         private void RemoveBall(object obj)
         {
             modelAPI.removeBall();
+        }
+
+        protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
