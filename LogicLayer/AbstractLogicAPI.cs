@@ -105,7 +105,7 @@ namespace LogicLayer
             public override void deleteBall()
             {
                 box.Balls.RemoveAt(box.Balls.Count - 1);
-                ballThreads[ballThreads.Count - 1].Abort();
+                //ballThreads[ballThreads.Count - 1].Abort();
                 ballThreads.RemoveAt(ballThreads.Count - 1);
             }
 

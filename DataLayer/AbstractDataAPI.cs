@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DataLayer
+﻿namespace DataLayer
 {
     public abstract class AbstractDataAPI
     {

@@ -35,32 +35,29 @@
             <ItemsControl ItemsSource="{Binding Balls}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <Canvas 
-                            Background="LightGray"
-                            Height="300" 
-                            Width="450"/>
+                        <Canvas Background="LightGray"
+                                Height="300" 
+                                Width="450"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemContainerStyle>
                     <Style TargetType="ContentPresenter">
-                        <Setter 
-                            Property="Canvas.Left"
-                            Value="{Binding PositionX}" />
-                        <Setter 
-                            Property="Canvas.Top"
-                            Value="{Binding PositionY}" />
+                        <Setter Property="Canvas.Left"
+                                Value="{Binding PositionX}" />
+                        <Setter Property="Canvas.Top"
+                                Value="{Binding PositionY}" />
                     </Style>
                 </ItemsControl.ItemContainerStyle>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Ellipse 
-                            Width="{Binding Diameter}"
-                            Height="{Binding Diameter}"
-                            Fill="GreenYellow">
+                        <Ellipse Width="{Binding Diameter}"
+                                 Height="{Binding Diameter}"
+                                 Fill="GreenYellow"
+                                 Stroke="Black"
+                                 StrokeThickness="1">
                             <Ellipse.RenderTransform>
-                                <TranslateTransform 
-                                    X="{Binding CenterTransform}"
-                                    Y="{Binding CenterTransform}" />
+                                <TranslateTransform X="{Binding CenterTransform}" 
+                                                    Y="{Binding CenterTransform}" />
                             </Ellipse.RenderTransform>
                         </Ellipse>
                     </DataTemplate>
@@ -80,16 +77,16 @@
                     Background="LightGreen"
                     Command="{Binding AddBallCommand}"/>
             <TextBox TextWrapping="NoWrap" 
-                     Text="2" 
+                     Text="{Binding BallCount}" 
                      FontSize="15" 
                      TextAlignment="Right" 
                      Margin="0,5,0,5"
-                     PreviewTextInput="TextBox_PreviewTextInput" 
-                     Width="Auto"/>
+                     Width="Auto" />
             <Button Content="Usuń kulę" 
                     Margin="0,5,0,5" 
                     Background="OrangeRed"
-                    Command="{Binding RemoveBallCommand}"/>
+                    Command="{Binding RemoveBallCommand}"
+                    IsEnabled="False"/>
         </StackPanel>
 
     </Grid>

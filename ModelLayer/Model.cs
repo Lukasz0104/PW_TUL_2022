@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using LogicLayer;
 
 namespace ModelLayer
@@ -16,9 +15,7 @@ namespace ModelLayer
 
         public Model(AbstractLogicAPI logicAPI = null)
         {
-            this.logicAPI = (logicAPI == null) ? AbstractLogicAPI.createLogicAPI() : logicAPI;
-
-            this.logicAPI.createBalls(2);
+            this.logicAPI = logicAPI ?? AbstractLogicAPI.createLogicAPI();
         }
 
         public void start()
@@ -28,6 +25,11 @@ namespace ModelLayer
             {
                 ObservableBallCollection.Add(new BallAdapter(b));
             }
+        }
+
+        public void createBalls(int numberOfBalls)
+        {
+            logicAPI.createBalls(numberOfBalls);
         }
 
         public void stop()

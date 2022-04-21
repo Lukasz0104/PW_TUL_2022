@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Input;
 
 namespace ViewModelLayer
@@ -14,8 +12,8 @@ namespace ViewModelLayer
 
         public RelayCommand(Action<object> execute, Predicate<object> canExecute)
         {
-            this.m_Execute = execute;
-            this.m_CanExecute = canExecute;
+            m_Execute = execute;
+            m_CanExecute = canExecute;
         }
         
         public bool CanExecute(object parameter)
@@ -25,14 +23,14 @@ namespace ViewModelLayer
 
         public virtual void Execute(object parameter)
         {
-            this.m_Execute(parameter);
+            m_Execute(parameter);
         }
 
         public event EventHandler CanExecuteChanged;
 
         internal void RaiseCanExecuteChanged()
         {
-            this.CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

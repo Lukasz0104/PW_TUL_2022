@@ -36,7 +36,7 @@ namespace ModelLayer
             set
             {
                 positionX = value;
-                RaisePropertyChanged(nameof(PositionX));
+                RaisePropertyChanged();
             }
         }
 
@@ -46,7 +46,7 @@ namespace ModelLayer
             set
             {
                 positionY = value;
-                RaisePropertyChanged(nameof(PositionY));
+                RaisePropertyChanged();
             }
         }
 
@@ -55,7 +55,7 @@ namespace ModelLayer
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public int CenterTransform { get => (int) -radius;  }
+        public double CenterTransform => -radius;
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
