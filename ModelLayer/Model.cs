@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using LogicLayer;
 
-namespace ModelLayer
+namespace PresentationLayer.ModelLayer
 {
     public class Model
     {

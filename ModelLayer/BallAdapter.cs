@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using LogicLayer;
 
-namespace ModelLayer
+namespace PresentationLayer.ModelLayer
 {
     public class BallAdapter : INotifyPropertyChanged
     {
@@ -19,8 +19,8 @@ namespace ModelLayer
             positionY = ball.PositionY;
         }
 
-        public double Radius 
-        { 
+        public double Radius
+        {
             get => radius;
             set => radius = value;
         }
@@ -29,9 +29,9 @@ namespace ModelLayer
         {
             get => 2 * radius;
         }
-        
-        public double PositionX 
-        { 
+
+        public double PositionX
+        {
             get => positionX;
             set
             {
@@ -40,8 +40,8 @@ namespace ModelLayer
             }
         }
 
-        public double PositionY 
-        { 
+        public double PositionY
+        {
             get => positionY;
             set
             {
@@ -59,7 +59,7 @@ namespace ModelLayer
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            Ball b = (Ball) sender;
+            Ball b = (Ball)sender;
             switch (e.PropertyName)
             {
                 case "PositionX":
