@@ -21,7 +21,7 @@ namespace PresentationLayer.ModelLayer
         public void start()
         {
             logicAPI.start();
-            foreach (Ball b in logicAPI.GetBalls())
+            foreach (BallWrapper b in logicAPI.GetBalls())
             {
                 ObservableBallCollection.Add(new BallAdapter(b));
             }
@@ -45,7 +45,7 @@ namespace PresentationLayer.ModelLayer
 
         public void removeBall()
         {
-            logicAPI.deleteBall();
+            //logicAPI.deleteBall();
             observableBallCollection.RemoveAt(observableBallCollection.Count - 1);
         }
     }

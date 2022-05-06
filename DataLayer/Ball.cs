@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace LogicLayer
+namespace DataLayer
 {
     public class Ball : INotifyPropertyChanged
     {

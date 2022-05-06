@@ -6,8 +6,8 @@ namespace LogicLayerTest
     [TestClass]
     public class LogicTest
     {
-        private AbstractLogicAPI logic = AbstractLogicAPI.createLogicAPI();
-       
+        private readonly AbstractLogicAPI logic = AbstractLogicAPI.createLogicAPI();
+
         [TestMethod]
         public void TestCreateBall()
         {
@@ -21,14 +21,6 @@ namespace LogicLayerTest
         {
             logic.createBalls(5);
             Assert.AreEqual(5, logic.GetBalls().Count);
-        }
-
-        [TestMethod]
-        public void TestDeleteBall()
-        {
-            logic.createBall();
-            logic.deleteBall();
-            Assert.AreEqual(0, logic.GetBalls().Count);
         }
     }
 }

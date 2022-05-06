@@ -11,7 +11,7 @@ namespace PresentationLayer.ModelLayer
         private double positionX;
         private double positionY;
 
-        public BallAdapter(Ball ball)
+        public BallAdapter(BallWrapper ball)
         {
             ball.PropertyChanged += OnPropertyChanged;
             radius = ball.Radius;
@@ -59,7 +59,7 @@ namespace PresentationLayer.ModelLayer
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            Ball b = (Ball)sender;
+            BallWrapper b = (BallWrapper)sender;
             switch (e.PropertyName)
             {
                 case "PositionX":

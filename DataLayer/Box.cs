@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace LogicLayer
+namespace DataLayer
 {
     public class Box
     {
@@ -10,7 +10,7 @@ namespace LogicLayer
         public double SizeX { get => sizeX; }
         public double SizeY { get => sizeY; }
 
-        private List<Ball> balls = new List<Ball>();
+        private List<Ball> balls;
         public List<Ball> Balls { get => balls; }
 
         public Box(double sizeX, double sizeY)

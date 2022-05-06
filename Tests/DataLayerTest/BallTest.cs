@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using LogicLayer;
+using DataLayer;
 
 namespace LogicLayerTest
 {
