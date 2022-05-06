@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LogicLayer\Logic.csproj" />
+    <ProjectReference Include="..\..\LogicLayer\Logic.csproj" />
   </ItemGroup>
 
 </Project>
