@@ -10,8 +10,8 @@ namespace LogicLayerTest
         [TestMethod]
         public void TestUpdateBall()
         {
-            Ball b = new Ball(0.0, 0.0, 10.0, 1.5, -1.0);
-            b.updateBall();
+            Ball b = new Ball(0.0, 0.0, 10.0);
+            b.updateBall(1.5, -1.0);
             Assert.AreEqual(1.5, b.PositionX);
             Assert.AreEqual(-1.0, b.PositionY);
         }

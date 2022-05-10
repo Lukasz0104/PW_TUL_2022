@@ -23,7 +23,6 @@ namespace DataLayer
         private class DataAPI : AbstractDataAPI
         {
             private readonly Random random = new Random();
-
             public DataAPI(double width = 450.0, double height = 300.0) 
                 : base(width, height) { }
 
@@ -32,10 +31,7 @@ namespace DataLayer
                 double r = 20.0;
                 double x = r + random.NextDouble() * (box.SizeX - 2 * r);
                 double y = r + random.NextDouble() * (box.SizeY - 2 * r);
-                int angle = random.Next(360);
-                double vx = 5 * Math.Sin(angle * Math.PI / 180);
-                double vy = 5 * Math.Cos(angle * Math.PI / 180);
-                Ball b = new Ball(x, y, r, vx, vy);
+                Ball b = new Ball(x, y, r);
                 box.addBall(b);
                 return b;
             }

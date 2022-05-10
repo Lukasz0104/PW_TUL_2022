@@ -8,8 +8,13 @@ namespace DataLayer
         private double positionX;
         private double positionY;
         private readonly double radius;
-        private double velocityX;
-        private double velocityY;
+        
+        public Ball(double positionX, double positionY, double radius)
+        {
+            this.positionX = positionX;
+            this.positionY = positionY;
+            this.radius = radius;
+        }
 
         public double PositionX 
         {
@@ -33,18 +38,6 @@ namespace DataLayer
 
         public double Radius { get => radius; }
 
-        public double VelocityX { get => velocityX; set => velocityX = value; }
-        public double VelocityY { get => velocityY; set=> velocityY = value; }
-
-        public Ball(double positionX, double positionY, double radius, double velocityX, double velocityY)
-        {
-            this.positionX = positionX;
-            this.positionY = positionY;
-            this.radius = radius;
-            this.velocityX = velocityX;
-            this.velocityY = velocityY;
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
@@ -52,7 +45,7 @@ namespace DataLayer
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void updateBall()
+        public void updateBall(double velocityX, double velocityY)
         {
             PositionX += velocityX;
             PositionY += velocityY;

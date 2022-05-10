@@ -10,7 +10,7 @@ namespace DataLayerTest
         public void AddBallTest()
         {
             Box box = new Box(100, 100);
-            Ball b = new Ball(50, 50, 5, 1, 1);
+            Ball b = new Ball(50, 50, 5);
 
             Assert.AreEqual(box.Balls.Count, 0);
 

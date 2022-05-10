@@ -24,16 +24,17 @@ namespace LogicLayer
 
         public static AbstractLogicAPI createLogicAPI(AbstractDataAPI dataAPI = null)
         {
-            return new LogicAPI(450, 300.0, dataAPI);
+            return new LogicAPI(dataAPI);
         }
 
         private class LogicAPI : AbstractLogicAPI
         {
+            private readonly Random random = new Random();
             private bool isRunning = false;
             private List<Thread> ballThreads = new List<Thread>();
             private List<BallWrapper> balls = new List<BallWrapper>();
 
-            public LogicAPI(double sizeX, double sizeY, AbstractDataAPI abstractDataAPI = null)
+            public LogicAPI(AbstractDataAPI abstractDataAPI = null)
                 : base(abstractDataAPI) { }
 
             public override List<BallWrapper> GetBalls() => balls;
@@ -41,34 +42,37 @@ namespace LogicLayer
             public override void createBall()
             {
                 Ball b =  dataAPI.createBall();
-                BallWrapper bw = new BallWrapper(b);
+                int angle = random.Next(360);
+                double vx = 5 * Math.Sin(angle * Math.PI / 180);
+                double vy = 5 * Math.Cos(angle * Math.PI / 180);
+                BallWrapper bw = new BallWrapper(b, vx, vy);
                 balls.Add(bw);
 
                 Thread t = new Thread(() =>
                 {
                     while (bw.Active)
                     {
-                        // TODO prevent balls from going beyond bottom border
                         bw.update();
+                        // TODO prevent balls from going beyond bottom border
                         if ((bw.Radius + bw.PositionX) >= dataAPI.Box.SizeX)
                         {
-                            bw.VelocityX = -bw.VelocityX;
+                            bw.VelocityX *= -1;
                             bw.PositionX = dataAPI.Box.SizeX - Math.Abs(bw.PositionX - dataAPI.Box.SizeX);
                         }
                         else if (bw.PositionX <= bw.Radius)
                         {
-                            bw.VelocityX = -bw.VelocityX;
+                            bw.VelocityX *= -1;
                             bw.PositionX = bw.Radius + Math.Abs(bw.Radius - bw.PositionX);
                         }
 
                         if ((bw.PositionY + bw.Radius) >= dataAPI.Box.SizeY)
                         {
-                            bw.VelocityY = -bw.VelocityY;
+                            bw.VelocityY *= -1;
                             bw.PositionY = dataAPI.Box.SizeY - Math.Abs(bw.PositionY - dataAPI.Box.SizeY);
                         }
-                        if (bw.PositionY <= bw.Radius)
+                        else if (bw.PositionY <= bw.Radius)
                         {
-                            bw.VelocityY = -bw.VelocityY;
+                            bw.VelocityY *= -1;
                             bw.PositionY = bw.Radius + Math.Abs(bw.Radius - bw.PositionY);
                         }
                         Thread.Sleep(10);
@@ -94,10 +98,6 @@ namespace LogicLayer
                 if (!isRunning)
                 {
                     isRunning = true;
-                    //foreach (BallWrapper bw in balls)
-                    //{
-                    //    bw.start();
-                    //}
                     foreach (Thread thread in ballThreads)
                     {
                         thread.Start();
@@ -108,6 +108,15 @@ namespace LogicLayer
             public override void stop()
             {
                 isRunning = false;
+            }
+
+            ~LogicAPI()
+            {
+                isRunning = false;
+                foreach (BallWrapper bw in balls)
+                {
+                    bw.stop();
+                }
             }
 
         }

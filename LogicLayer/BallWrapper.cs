@@ -10,6 +10,8 @@ namespace LogicLayer
     public class BallWrapper : INotifyPropertyChanged
     {
         private readonly Ball ball;
+        private double velocityX;
+        private double velocityY;
         
         private double positionX;
         public double PositionX
@@ -18,7 +20,6 @@ namespace LogicLayer
             set
             {
                 positionX = value;
-                //ball.PositionX = positionX;
                 RaisePropertyChanged();
             }
         }
@@ -30,7 +31,6 @@ namespace LogicLayer
             set
             {
                 positionY = value;
-                //ball.PositionY = positionY;
                 RaisePropertyChanged();
             }
         }
@@ -40,20 +40,20 @@ namespace LogicLayer
         public double Radius { get => radius; }
         public double VelocityX 
         {
-            get => ball.VelocityX;
-            set => ball.VelocityX = value;
+            get => velocityX;
+            set => velocityX = value;
         }
 
         public double VelocityY
         {
-            get => ball.VelocityX;
-            set => ball.VelocityY = value;
+            get => velocityX;
+            set => velocityY = value;
         }
 
         private bool active;
         public bool Active { get => active; }
 
-        public BallWrapper(Ball b, bool active = true)
+        public BallWrapper(Ball b, double vx, double vy, bool active = true)
         {
             b.PropertyChanged += OnPropertyChanged;
             ball = b;
@@ -61,6 +61,9 @@ namespace LogicLayer
             positionX = b.PositionX;
             positionY = b.PositionY;
             radius = b.Radius;
+
+            velocityX = vx;
+            velocityY = vy;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -68,7 +71,7 @@ namespace LogicLayer
 
         public void update()
         {
-            ball.updateBall();
+            ball.updateBall(velocityX, velocityY);
         }
 
         public void start()
