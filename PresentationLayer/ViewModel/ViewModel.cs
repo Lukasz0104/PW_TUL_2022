@@ -44,12 +44,14 @@ namespace PresentationLayer.ViewModelLayer
         public ICommand StartCommand { get; set; }
         public ICommand AddBallCommand { get; set; }
         public ICommand RemoveBallCommand { get; set; }
+        public ICommand ClosingCommand { get; set; }
 
         public ViewModel()
         {
             StartCommand = new RelayCommand(Start);
             AddBallCommand = new RelayCommand(AddBall);
             RemoveBallCommand = new RelayCommand(RemoveBall);
+            ClosingCommand = new RelayCommand(Close);
         }
 
 
@@ -60,6 +62,12 @@ namespace PresentationLayer.ViewModelLayer
                 modelAPI.createBalls(ballCountInt);
             }
             modelAPI.start();
+        }
+
+        private void Close(object obj)
+        {
+            // TODO bind this method to window closing
+            modelAPI.stop();
         }
 
         private void AddBall(object obj)

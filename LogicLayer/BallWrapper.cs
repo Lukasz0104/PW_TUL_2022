@@ -46,7 +46,7 @@ namespace LogicLayer
 
         public double VelocityY
         {
-            get => velocityX;
+            get => velocityY;
             set => velocityY = value;
         }
 
