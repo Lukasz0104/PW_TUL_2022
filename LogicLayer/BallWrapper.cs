@@ -9,6 +9,14 @@ namespace LogicLayer
 {
     public class BallWrapper : INotifyPropertyChanged
     {
+        private bool moved = false;
+
+        public bool Moved
+        {
+            get => moved;
+            set => moved = value;
+        }
+
         private readonly Ball ball;
         private double velocityX;
         private double velocityY;
@@ -34,6 +42,8 @@ namespace LogicLayer
                 RaisePropertyChanged();
             }
         }
+
+        public double Mass { get => ball.Mass; }
 
 
         private double radius;

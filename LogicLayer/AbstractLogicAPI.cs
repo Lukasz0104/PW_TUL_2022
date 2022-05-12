@@ -37,6 +37,8 @@ namespace LogicLayer
             private double width;
             private double height;
 
+            private object _lock = new object();
+
             private Barrier barrier = new Barrier(0);
 
             public LogicAPI(AbstractDataAPI abstractDataAPI = null)
@@ -52,8 +54,9 @@ namespace LogicLayer
             {
                 Ball b =  dataAPI.createBall();
                 int angle = random.Next(360);
-                double vx = 2.5 * Math.Sin(angle * Math.PI / 180);
-                double vy = 2.5 * Math.Cos(angle * Math.PI / 180);
+                double velocityMagnitude = 5;
+                double vx =  Math.Sin(angle * Math.PI / 180) * velocityMagnitude;
+                double vy = Math.Cos(angle * Math.PI / 180) * velocityMagnitude;
                 BallWrapper bw = new BallWrapper(b, vx, vy);
                 balls.Add(bw);
 
@@ -63,7 +66,7 @@ namespace LogicLayer
                 {
                     while (bw.Active)
                     {
-                        bw.update();
+                        bw.Moved = false;
                         if ((bw.Radius + bw.PositionX) > width)
                         {
                             bw.VelocityX *= -1;
@@ -85,8 +88,18 @@ namespace LogicLayer
                             bw.VelocityY *= -1;
                             bw.PositionY = bw.Radius + Math.Abs(bw.Radius - bw.PositionY);
                         }
+
                         Thread.Sleep(10);
                         barrier.SignalAndWait();
+
+                        lock (_lock)
+                        {
+                            bw.update();
+                            if (!bw.Moved)
+                            {
+                                detectCollisions(bw);
+                            }
+                        }
                     }
                 });
                 if (isRunning)
@@ -94,6 +107,37 @@ namespace LogicLayer
                     t.Start();
                 }
                 ballThreads.Add(t);
+            }
+
+            private void detectCollisions(BallWrapper ball)
+            {
+                double px = ball.PositionX;
+                double py = ball.PositionY;
+                foreach (BallWrapper b in balls)
+                {
+                    if (b == ball) continue;
+
+                    if (b.Moved) continue;
+
+                    double dx = px - b.PositionX;
+                    double dy = py - b.PositionY;
+                    double massDifference = ball.Mass - b.Mass;
+                    double massSum = ball.Mass + b.Mass;
+
+                    if (Math.Sqrt(dx * dx + dy * dy) <= (ball.Radius + b.Radius))
+                    {
+                        double v1x = ball.VelocityX, v1y = ball.VelocityY, v2x = b.VelocityX, v2y = b.VelocityY;
+
+                        ball.VelocityX = (v1x * massDifference + 2 * b.Mass * v2x) / massSum;
+                        ball.VelocityY = (v1y * massDifference + 2 * b.Mass * v2y) / massSum;
+
+                        b.VelocityX = (-v2x * massDifference + 2 * ball.Mass * v1x) / massSum;
+                        b.VelocityY = (-v2y * massDifference + 2 * ball.Mass * v2y) / massSum;
+
+                        ball.Moved = true;
+                        b.Moved = true;
+                    }
+                }
             }
 
             public override void createBalls(int count)

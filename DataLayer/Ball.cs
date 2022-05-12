@@ -8,6 +8,7 @@ namespace DataLayer
         private double positionX;
         private double positionY;
         private readonly double radius;
+        private double mass = 5;
         
         public Ball(double positionX, double positionY, double radius)
         {
@@ -15,6 +16,8 @@ namespace DataLayer
             this.positionY = positionY;
             this.radius = radius;
         }
+
+        public double Mass { get => mass; }
 
         public double PositionX 
         {

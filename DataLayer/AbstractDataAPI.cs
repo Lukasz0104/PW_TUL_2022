@@ -31,6 +31,26 @@ namespace DataLayer
                 double r = 20.0;
                 double x = r + random.NextDouble() * (box.SizeX - 2 * r);
                 double y = r + random.NextDouble() * (box.SizeY - 2 * r);
+                bool f = true;
+                do
+                {
+                    f = true;
+
+                    foreach (Ball b1 in box.Balls)
+                    {
+                        double dx = x - b1.PositionX;
+                        double dy = y - b1.PositionY;
+                        double distance = Math.Sqrt(dx * dx + dy * dy);
+                        if (distance <= (r + b1.Radius))
+                        {
+                            f = false;
+                            x = r + random.NextDouble() * (box.SizeX - 2 * r);
+                            y = r + random.NextDouble() * (box.SizeY - 2 * r);
+                            break;
+                        }
+                    }
+                } while (!f);
+
                 Ball b = new Ball(x, y, r);
                 box.addBall(b);
                 return b;
