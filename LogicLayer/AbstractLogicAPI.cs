@@ -52,7 +52,7 @@ namespace LogicLayer
             {
                 Ball b =  dataAPI.createBall();
                 int angle = random.Next(360);
-                double velocityMagnitude = 2;
+                double velocityMagnitude = 1.5;
                 double vx =  Math.Sin(angle * Math.PI / 180) * velocityMagnitude;
                 double vy = Math.Cos(angle * Math.PI / 180) * velocityMagnitude;
                 BallWrapper bw = new BallWrapper(b, vx, vy);
@@ -87,13 +87,10 @@ namespace LogicLayer
 
                         Thread.Sleep(5);
 
-                        lock (_lock)
+                        bw.update();
+                        if (!bw.Moved)
                         {
-                            bw.update();
-                            if (!bw.Moved)
-                            {
-                                detectCollisions(bw);
-                            }
+                            detectCollisions(bw);
                         }
                     }
                 });
@@ -106,42 +103,38 @@ namespace LogicLayer
 
             private void detectCollisions(BallWrapper ball)
             {
-                double px = ball.PositionX;
-                double py = ball.PositionY;
-                foreach (BallWrapper b in balls)
+                lock (_lock)
                 {
-                    if (b == ball) continue;
-
-                    if (b.Moved) continue;
-
-                    double dx = px - b.PositionX;
-                    double dy = py - b.PositionY;
-                    //double massDifference = ball.Mass - b.Mass;
-                    double massSum = ball.Mass + b.Mass;
-
-                    if (Math.Sqrt(dx * dx + dy * dy) <= (ball.Radius + b.Radius))
+                    double px = ball.PositionX;
+                    double py = ball.PositionY;
+                    foreach (BallWrapper b in balls)
                     {
-                        double v1x = ball.VelocityX, v1y = ball.VelocityY, v2x = b.VelocityX, v2y = b.VelocityY;
+                        if (b == ball) continue;
 
-                        //ball.VelocityX = (v1x * massDifference + 2 * b.Mass * v2x) / massSum;
-                        //ball.VelocityY = (v1y * massDifference + 2 * b.Mass * v2y) / massSum;
+                        if (b.Moved) continue;
 
-                        //b.VelocityX = (-v2x * massDifference + 2 * ball.Mass * v1x) / massSum;
-                        //b.VelocityY = (-v2y * massDifference + 2 * ball.Mass * v2y) / massSum;
+                        double dx = px - b.PositionX;
+                        double dy = py - b.PositionY;
+                        double massSum = ball.Mass + b.Mass;
 
-                        ball.Moved = true;
-                        b.Moved = true;
+                        if (Math.Sqrt(dx * dx + dy * dy) <= (ball.Radius + b.Radius))
+                        {
+                            double v1x = ball.VelocityX, v1y = ball.VelocityY, v2x = b.VelocityX, v2y = b.VelocityY;
 
-                        double dvx = v1x - b.VelocityX;
-                        double dvy = v1y - b.VelocityY;
+                            ball.Moved = true;
+                            b.Moved = true;
 
-                        double c = 2 * (dx * dvx + dy * dvy) / (dx * dx + dy * dy) / massSum;
+                            double dvx = v1x - b.VelocityX;
+                            double dvy = v1y - b.VelocityY;
 
-                        ball.VelocityX = v1x - b.Mass * dx * c;
-                        ball.VelocityY = v1y - b.Mass * dy * c;
+                            double c = 2 * (dx * dvx + dy * dvy) / (dx * dx + dy * dy) / massSum;
 
-                        b.VelocityX = v2x + ball.Mass * dx * c;
-                        b.VelocityY = v2y + ball.Mass * dy * c;
+                            ball.VelocityX = v1x - b.Mass * dx * c;
+                            ball.VelocityY = v1y - b.Mass * dy * c;
+
+                            b.VelocityX = v2x + ball.Mass * dx * c;
+                            b.VelocityY = v2y + ball.Mass * dy * c;
+                        }
                     }
                 }
             }
