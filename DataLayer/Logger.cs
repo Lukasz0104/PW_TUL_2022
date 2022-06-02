@@ -16,6 +16,12 @@ namespace DataLayer
 
         public void Log(List<Ball> balls)
         {
+            // Delete old log file
+            if (File.Exists("logs.json"))
+            {
+                File.Delete("logs.json");
+            }
+
             loggerRunning = true;
             Task.Run(() =>
             {
