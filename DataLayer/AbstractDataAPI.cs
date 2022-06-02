@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace DataLayer
 {
     public abstract class AbstractDataAPI
     {
+        private Logger _logger = new Logger();
+
         private readonly Box box;
         public Box Box { get => box; }
 
@@ -19,6 +20,19 @@ namespace DataLayer
         }
 
         public abstract Ball createBall();
+
+        public void StartLogging()
+        {
+            _logger.Log(box.Balls);
+        }
+
+        public void StopLogging()
+        {
+            _logger.Stop();
+        }
+
+        ~AbstractDataAPI() => StopLogging();
+
 
         private class DataAPI : AbstractDataAPI
         {

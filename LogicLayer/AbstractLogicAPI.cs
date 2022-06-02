@@ -156,12 +156,14 @@ namespace LogicLayer
                     {
                         thread.Start();
                     }
+                    dataAPI.StartLogging();
                 }
             }
 
             public override void stop()
             {
                 isRunning = false;
+                dataAPI.StopLogging();
             }
 
             ~LogicAPI()
@@ -171,6 +173,7 @@ namespace LogicLayer
                 {
                     bw.stop();
                 }
+                stop();
             }
 
         }
